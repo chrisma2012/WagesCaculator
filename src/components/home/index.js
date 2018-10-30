@@ -1,41 +1,59 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Picker, FlatList, TextInput } from 'react-native'
+import {
+  StyleSheet, 
+  View, 
+  Text, 
+  Picker, 
+  FlatList, 
+  TextInput, 
+  ScrollView,
+  Dimensions
+} from 'react-native'
 
-const FlatListData = [{
-  id: 1,
-  date: 1,
+const screenHeight = Dimensions.get('window').height;
+
+const flatListData = [{
+  id: '16',
+  date: '1',
   day: '一',
-  model: 100,
-  todaySalary: 140
+  model: '100',
+  todaySalary: '140'
 }, {
-  id: 2,
-  date: 1,
+  id: '17',
+  date: '1',
   day: '一',
-  model: 100,
-  todaySalary: 140
+  model: '100',
+  todaySalary: '140'
 }, {
-  id: 3,
+  id: '18',
   date: 1,
   day: '一',
-  model: 100,
-  todaySalary: 140
+  model: '100',
+  todaySalary: '140'
 }, {
-  id: 4,
-  date: 1,
+  id: '19',
+  date: '1',
   day: '一',
-  model: 100,
-  todaySalary: 140
+  model: '100',
+  todaySalary: '140'
+}, {
+  id: '20',
+  date: '1',
+  day: '一',
+  model: '100',
+  todaySalary: '140'
 }]
 
-// const flatListItem = (item) =>
-//   (
-//     <View key={item.id} style={styles.flatList}>
-//       <Text style={[styles.flatListItem]}>{item.date}</Text>
-//       <Text style={[styles.flatListItem]}>{item.day}</Text>
-//       <TextInput style={[styles.flatListItem]}>{item.model}</TextInput>
-//       <TextInput style={[styles.flatListItem]}>{item.todaySalary}</TextInput>
-//     </View>
-//   )
+
+const flatListItemFunc = ({ item }) =>
+  (
+    <View style={styles.flatList}>
+      <Text style={[styles.flatListItem, { flex: 1 }]}>{item.date}</Text>
+      <Text style={[styles.flatListItem, { flex: 1 }]}>{item.day}</Text>
+      <TextInput style={[styles.flatListItem, { flex: 2, backgroundColor: 'white' }]} value={item.model} />
+      <Text style={[styles.flatListItem, { flex: 2, color: '#d85b3b' }]}  >{item.todaySalary}</Text>
+    </View>
+  )
 
 
 export default class Home extends Component {
@@ -72,63 +90,65 @@ export default class Home extends Component {
           </Picker>
           <Text >月</Text>
         </View>
+        <View style={styles.dataContentTitle}>
+          <Text style={[styles.dataContentTitleItem, { flex: 1 }]}>日期</Text>
+          <Text style={[styles.dataContentTitleItem, { flex: 1 }]}>星期</Text>
+          <Text style={[styles.dataContentTitleItem, { flex: 2 }]}>模数</Text>
+          <Text style={[styles.dataContentTitleItem, { flex: 2 }]}>当日工资</Text>
+        </View>
         {/* 内容区 */}
-        <View style={styles.content}>
+        <ScrollView style={{height:screenHeight - 190}}>
           <View style={styles.dataContent}>
-            <View style={styles.dataContentTitle}>
-              <Text style={styles.dataContentTitle}>日期</Text>
-              <Text style={styles.dataContentTitle}>星期</Text>
-              <Text style={styles.dataContentTitle}>模数</Text>
-              <Text style={styles.dataContentTitle}>当日工资</Text>
+            <FlatList
+              data={flatListData}
+              keyExtractor={(item) => item.id}
+              renderItem={flatListItemFunc}
+              ItemSeparatorComponent={() => <View style={{ height: 1, borderStyle: 'dashed' }}></View>}
+              initialNumToRender={5}
+              refreshing={true}
+            // ItemSeparatorComponent={}
+            />
+          </View>
+
+          <View style={{ display: 'flex', overflow: 'hidden' }}>
+            <View style={styles.outlineItem}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>当月工资</Text>
+              <Text style={styles.outlineItemVal}>180</Text>
             </View>
-            <View style={styles.dataContentBody}>
-              <FlatList data={FlatListData} renderItem={(item) =>
-                (
-                  <View key={item.id} style={styles.flatList}>
-                    <Text style={[styles.flatListItem]}>{item.date}</Text>
-                    <Text style={[styles.flatListItem]}>{item.day}</Text>
-                    <TextInput style={[styles.flatListItem]}>{item.model}</TextInput>
-                    <TextInput style={[styles.flatListItem]}>{item.todaySalary}</TextInput>
-                  </View>
-                )} />
+            <View style={[styles.outlineItem, styles.outlineItemOdd]}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>全勤奖</Text>
+              <Text style={styles.outlineItemVal}>180</Text>
             </View>
-            <View >
-              <View style={styles.outlineItem}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>当月工资</Text>
-                <Text style={styles.outlineSubItem}>180</Text>
-              </View>
-              <View style={[styles.outlineItem, styles.outlineItemOdd]}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>全勤奖</Text>
-                <Text style={styles.outlineSubItem}>180</Text>
-              </View>
-              <View style={styles.outlineItem}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>住房公积金</Text>
-                <Text style={styles.outlineSubItem}>180</Text>
-              </View>
-              <View style={[styles.outlineItem, styles.outlineItemOdd]}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>社保</Text>
-                <Text style={styles.outlineSubItem}>180</Text>
-              </View>
-              <View style={styles.outlineItem}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>附加</Text>
-                <TextInput style={styles.outlineSubItem}>180</TextInput>
-              </View>
-              <View style={[styles.outlineItem, styles.outlineItemOdd]}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>底薪</Text>
-                <Text style={styles.outlineSubItem}>180</Text>
-              </View>
-              <View style={styles.outlineItem}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>税前总工资</Text>
-                <Text style={styles.outlineSubItem}>180</Text>
-              </View>
-              <View style={[styles.outlineItem, styles.outlineItemOdd]}>
-                <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>税后总工资</Text>
-                <Text style={styles.outlineSubItem}>180</Text>
-              </View>
+            <View style={styles.outlineItem}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>住房公积金</Text>
+              <Text style={styles.outlineItemVal}>180</Text>
+            </View>
+            <View style={[styles.outlineItem, styles.outlineItemOdd]}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>社保</Text>
+              <Text style={styles.outlineItemVal}>180</Text>
+            </View>
+            <View style={styles.outlineItem}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>附加</Text>
+              <TextInput
+                style={[styles.outlineItemVal, { display: 'flex' }]}
+                placeholder="附加数据"
+              ></TextInput>
+            </View>
+            <View style={[styles.outlineItem, styles.outlineItemOdd]}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>底薪</Text>
+              <Text style={styles.outlineItemVal}>180</Text>
+            </View>
+            <View style={styles.outlineItem}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>税前总工资</Text>
+              <Text style={styles.outlineItemVal}>180</Text>
+            </View>
+            <View style={[styles.outlineItem, styles.outlineItemOdd]}>
+              <Text style={[styles.outlineSubItem, styles.outlineSubItemTitle]}>税后总工资</Text>
+              <Text style={styles.outlineItemVal}>180</Text>
             </View>
           </View>
-        </View>
-      </View >
+        </ScrollView>
+      </View>
     )
   }
 }
@@ -150,34 +170,39 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "red"
   },
-  content: {
-    display: "flex",
-    flexDirection: "row"
+
+
+  // dataContent: {
+  //   flex: 1
+  // },
+  dataContentTitle: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    backgroundColor: "#e9f1af"
+  },
+  dataContentTitleItem: {
+    fontSize: 20,
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center'
   },
 
-  dataContent: {
-    flex: 1
-  },
-  dataContentTitle: {
-    backgroundColor: "#e9f1af",
-    display: "flex",
-    flexDirection: "row"
-  },
-  dataContentTitle: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  dataContentBody: {
-
-  },
   flatList: {
+    height: 50,
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "pink"
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'lightgrey'
   },
   flatListItem: {
-    flex: 1,
-    fontSize: 18
+    fontSize: 18,
+    display: 'flex',
+    justifyContent: 'center',
+    textAlign: 'center'
   },
 
   outlineItem: {
@@ -188,15 +213,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#94a1d4",
   },
   outlineItemOdd: {
-    backgroundColor: "#5e6788"
+    backgroundColor: "#387abf"
   },
   outlineSubItem: {
-    flex: 1,
     fontSize: 20,
   },
   outlineSubItemTitle: {
     flex: 2,
     paddingLeft: 10,
-
+  },
+  outlineItemVal: {
+    fontSize: 20,
+    height: 60,
+    flex: 3,
+    lineHeight: 60,
+    textAlign: 'right',
+    paddingRight: 25
   }
 })
